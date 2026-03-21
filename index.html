@@ -479,10 +479,10 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
     <div>
       <div class="hero-badge">India's Fastest SMM Panel</div>
       <h1 class="hero-h">Grow your Social Media with <span class="accent">iDELL Haiku</span></h1>
-      <p class="hero-p">Real Instagram and YouTube growth — starting at just Rs. 20 for 13,000 views. Fast delivery, lifetime refill, 24/7 AI support.</p>
+      <p class="hero-p">India ka sabse sasta SMM Panel — Instagram, YouTube aur Facebook growth sirf Rs. 1/1000 se shuru. Fast delivery, lifetime refill, 24/7 AI support.</p>
       <div class="hero-btns">
         <button class="btn btn-teal" onclick="showLogin()">Start for Free</button>
-        <a href="#services" class="btn btn-outline">View Pricing</a>
+        <button class="btn btn-outline" onclick="showLogin()">View Pricing</button>
       </div>
     </div>
     <div class="hero-visual">
@@ -496,10 +496,10 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
           <div class="dp-card"><div class="dp-card-label">Orders</div><div class="dp-card-val">48</div></div>
         </div>
         <div class="dp-service">
-          <div class="dp-service-title">Recent services</div>
-          <div class="dp-service-item"><span class="dp-sname">Instagram Views</span><span class="dp-sprice">Rs. 20 / 13K</span></div>
-          <div class="dp-service-item"><span class="dp-sname">YouTube Subscribers</span><span class="dp-sprice">Rs. 35 / 1K</span></div>
-          <div class="dp-service-item"><span class="dp-sname">YouTube Likes</span><span class="dp-sprice">Rs. 30 / 1K</span></div>
+          <div class="dp-service-title">Services</div>
+          <div class="dp-service-item"><span class="dp-sname">Instagram Views</span><span class="dp-sprice">Rs. 1 / 1K</span></div>
+          <div class="dp-service-item"><span class="dp-sname">YouTube Views</span><span class="dp-sprice">Rs. 3 / 1K</span></div>
+          <div class="dp-service-item"><span class="dp-sname">Instagram Followers</span><span class="dp-sprice">Rs. 20 / 1K</span></div>
         </div>
       </div>
     </div>
@@ -508,9 +508,9 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
 
 <div class="stats-bar">
   <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">10,000+</div><div class="stat-label">Happy Customers</div></div>
+    <div class="stat-item"><div class="stat-num">65,000+</div><div class="stat-label">Happy Users</div></div>
     <div class="stat-div"></div>
-    <div class="stat-item"><div class="stat-num">Rs. 20</div><div class="stat-label">For 13K Views</div></div>
+    <div class="stat-item"><div class="stat-num">Rs. 1</div><div class="stat-label">Per 1K Views</div></div>
     <div class="stat-div"></div>
     <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">AI Support</div></div>
     <div class="stat-div"></div>
@@ -590,7 +590,12 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
   </div>
   <div class="footer-copy">
     <span>2025 iDELL Haiku. All rights reserved.</span>
-    <span>Made by <a href="https://instagram.com/suthariya_sahil" target="_blank">Sahil Suthariya</a></span>
+    <span>Made by 
+      <a href="https://instagram.com/suthariya_sahil" target="_blank" style="display:inline-flex;align-items:center;gap:.3rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="#E1306C" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="#E1306C"/></svg>
+        @suthariya_sahil
+      </a>
+    </span>
   </div>
 </footer>
 
@@ -642,6 +647,10 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
         <div class="nav-item" onclick="gotoPage('orders')">
           <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           Order History
+        </div>
+        <div class="nav-item" onclick="gotoPage('calculator')">
+          <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+          Price Calculator
         </div>
         <div class="nav-group-title">Account</div>
         <div class="nav-item" onclick="gotoPage('funds')">
@@ -732,6 +741,44 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
             <div class="charge-box" id="of-charge">Rs. 0.00 <span>Enter quantity above</span></div>
           </div>
           <button class="submit-btn" id="order-submit-btn" onclick="placeOrder()">Submit Order</button>
+        </div>
+      </div>
+
+      <!-- PRICE CALCULATOR -->
+      <div class="app-page" id="pg-calculator">
+        <div class="order-form">
+          <h2 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:.4rem;">Price Calculator</h2>
+          <p style="color:var(--muted);font-size:.8rem;margin-bottom:1.5rem;">Apni quantity daal — sahi price turant milega!</p>
+
+          <div class="form-group">
+            <label class="form-label">Platform</label>
+            <select class="form-select" id="calc-platform" onchange="calcPlatformChange()">
+              <option value="">Select Platform</option>
+              <option value="instagram">Instagram</option>
+              <option value="youtube">YouTube</option>
+              <option value="facebook">Facebook</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Service</label>
+            <select class="form-select" id="calc-service" onchange="calcServiceChange()">
+              <option value="">Select Service</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Quantity (kitna chahiye?)</label>
+            <input type="number" class="form-input" id="calc-qty" placeholder="e.g. 1000, 50000, 1000000" oninput="calcResult()"/>
+          </div>
+
+          <div id="calc-result" style="display:none;background:var(--teal3);border:1.5px solid var(--border2);border-radius:12px;padding:1.2rem;margin-top:.5rem;text-align:center;">
+            <div style="font-size:.75rem;color:var(--teal);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem;">Total Price</div>
+            <div id="calc-price" style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--teal);">Rs. 0.00</div>
+            <div id="calc-breakdown" style="font-size:.75rem;color:var(--muted);margin-top:.3rem;"></div>
+          </div>
+
+          <button class="submit-btn" style="margin-top:1.2rem;" onclick="gotoPage('new-order')">Place Order Now</button>
         </div>
       </div>
 
@@ -897,22 +944,22 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
 /* ===================== DATA ===================== */
 const SERVICES = {
   instagram: [
-    {id:'ig-followers',name:'Instagram Followers',rate:20/1000,min:100,max:100000000,refill:'30 Days',smmId:'2',info:'Real-looking followers. Gradual delivery for safety.'},
-    {id:'ig-likes',name:'Instagram Likes',rate:1/1000,min:100,max:100000000,refill:'Lifetime',smmId:'3',info:'Instant likes for any post. Lifetime refill guarantee.'},
-    {id:'ig-views',name:'Instagram Views / Reels Views',rate:1/1000,min:100,max:100000000,refill:'Lifetime',smmId:'1',info:'Fast delivery views for posts and reels.'},
-    {id:'ig-story',name:'Instagram Story Views',rate:1/1000,min:100,max:100000000,refill:'None',smmId:'4',info:'Fast delivery story views.'},
-    {id:'ig-comments',name:'Instagram Comments (Custom)',rate:50/50,min:10,max:5000,refill:'None',smmId:'5',info:'Custom comments. Contact WhatsApp after order for comment text.'},
+    {id:'ig-followers',name:'Instagram Followers',rate:18/1000,min:100,max:100000000,refill:'30 Days',smmId:'2',info:'Real followers. Gradual delivery for safety.'},
+    {id:'ig-likes',name:'Instagram Likes',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'3',info:'Instant likes. Lifetime refill guarantee.'},
+    {id:'ig-views',name:'Instagram Views / Reels Views',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'1',info:'Fast delivery views for posts and reels.'},
+    {id:'ig-story',name:'Instagram Story Views',rate:0.70/1000,min:100,max:100000000,refill:'None',smmId:'4',info:'Fast delivery story views.'},
+    {id:'ig-comments',name:'Instagram Comments (Custom)',rate:50/50,min:10,max:5000,refill:'None',smmId:'5',info:'Custom comments. Contact WhatsApp after order.'},
   ],
   youtube: [
-    {id:'yt-views',name:'YouTube Views',rate:3/1000,min:100,max:100000000,refill:'Lifetime',smmId:'6',info:'High-retention YouTube views. Safe for monetization.'},
-    {id:'yt-likes',name:'YouTube Likes',rate:1/1000,min:100,max:100000000,refill:'Lifetime',smmId:'7',info:'Real-looking likes for any YouTube video.'},
-    {id:'yt-subs',name:'YouTube Subscribers',rate:30/1000,min:100,max:100000000,refill:'30 Days',smmId:'8',info:'Channel subscribers. Gradual delivery.'},
+    {id:'yt-views',name:'YouTube Views',rate:2.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'6',info:'High-retention YouTube views. Safe for monetization.'},
+    {id:'yt-likes',name:'YouTube Likes',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'7',info:'Real-looking likes for any YouTube video.'},
+    {id:'yt-subs',name:'YouTube Subscribers',rate:28/1000,min:100,max:100000000,refill:'30 Days',smmId:'8',info:'Channel subscribers. Gradual delivery.'},
     {id:'yt-comments',name:'YouTube Comments',rate:60/50,min:10,max:5000,refill:'None',smmId:'9',info:'Custom YouTube comments. Contact WhatsApp after order.'},
-    {id:'yt-hours',name:'YouTube Watch Hours',rate:99/500,min:100,max:10000,refill:'None',smmId:'10',info:'Real watch hours for monetization eligibility.'},
+    {id:'yt-hours',name:'YouTube Watch Hours',rate:180/500,min:100,max:10000,refill:'None',smmId:'10',info:'Real watch hours for monetization eligibility.'},
   ],
   facebook: [
-    {id:'fb-followers',name:'Facebook Followers',rate:5/1000,min:100,max:100000000,refill:'None',smmId:'11',info:'Facebook page/profile followers.'},
-    {id:'fb-views',name:'Facebook Views',rate:2/1000,min:100,max:100000000,refill:'None',smmId:'12',info:'Facebook video views.'},
+    {id:'fb-followers',name:'Facebook Followers',rate:4.70/1000,min:100,max:100000000,refill:'None',smmId:'11',info:'Facebook page/profile followers.'},
+    {id:'fb-views',name:'Facebook Views',rate:1.70/1000,min:100,max:100000000,refill:'None',smmId:'12',info:'Facebook video views.'},
   ]
 };
 
@@ -1042,7 +1089,57 @@ function renderDashboard() {
     `</tbody></table>`;
 }
 
-/* ===================== REAL smmadx SERVICE LOADING ===================== */
+/* ===================== PRICE CALCULATOR ===================== */
+const CALC_RATES = {
+  instagram: [
+    {id:'ig-followers', name:'Followers', rate:18},
+    {id:'ig-likes', name:'Likes', rate:0.70},
+    {id:'ig-views', name:'Views / Reels Views', rate:0.70},
+    {id:'ig-story', name:'Story Views', rate:0.70},
+    {id:'ig-comments', name:'Comments', rate:1000},
+  ],
+  youtube: [
+    {id:'yt-views', name:'Views', rate:2.70},
+    {id:'yt-likes', name:'Likes', rate:0.70},
+    {id:'yt-subs', name:'Subscribers', rate:28},
+    {id:'yt-comments', name:'Comments', rate:1000},
+    {id:'yt-hours', name:'Watch Hours', rate:180},
+  ],
+  facebook: [
+    {id:'fb-followers', name:'Followers', rate:4.70},
+    {id:'fb-views', name:'Views', rate:1.70},
+  ]
+};
+
+window.calcPlatformChange = function() {
+  const platform = document.getElementById('calc-platform').value;
+  const svcSel = document.getElementById('calc-service');
+  svcSel.innerHTML = '<option value="">Select Service</option>';
+  document.getElementById('calc-result').style.display = 'none';
+  document.getElementById('calc-qty').value = '';
+  if (!platform || !CALC_RATES[platform]) return;
+  CALC_RATES[platform].forEach(s => {
+    svcSel.innerHTML += `<option value="${s.id}">${s.name} — Rs. ${s.rate}/1,000</option>`;
+  });
+};
+
+window.calcServiceChange = function() {
+  document.getElementById('calc-result').style.display = 'none';
+  document.getElementById('calc-qty').value = '';
+};
+
+window.calcResult = function() {
+  const platform = document.getElementById('calc-platform').value;
+  const svcId = document.getElementById('calc-service').value;
+  const qty = parseInt(document.getElementById('calc-qty').value) || 0;
+  if (!platform || !svcId || !qty) { document.getElementById('calc-result').style.display='none'; return; }
+  const svc = CALC_RATES[platform] ? CALC_RATES[platform].find(s => s.id === svcId) : null;
+  if (!svc) return;
+  const price = ((svc.rate / 1000) * qty).toFixed(2);
+  document.getElementById('calc-result').style.display = 'block';
+  document.getElementById('calc-price').textContent = `Rs. ${parseFloat(price).toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+  document.getElementById('calc-breakdown').textContent = `${qty.toLocaleString()} ${svc.name} × Rs. ${svc.rate}/1,000`;
+};
 let allServices = []; // loaded from smmadx API
 let selectedService = null;
 
@@ -1119,8 +1216,23 @@ function getSelectedServiceData() {
 window.submitFundRequest = function() {
   const amount = parseFloat(document.getElementById('fund-amount').value);
   const txn = document.getElementById('fund-txn').value.trim();
-  if (!amount || amount < 10) { showToast('Minimum amount is Rs. 10'); return; }
-  if (!txn) { showToast('Please enter transaction ID'); return; }
+  
+  // Strict validation
+  if (!amount || isNaN(amount) || amount < 10) { 
+    showToast('Minimum amount Rs. 10 hona chahiye!'); return; 
+  }
+  if (!txn || txn.length < 6) { 
+    showToast('Sahi UTR/Transaction ID daalo — kam se kam 6 characters!'); return; 
+  }
+  if (!/^[a-zA-Z0-9]+$/.test(txn)) { 
+    showToast('Transaction ID mein sirf letters aur numbers allowed hain!'); return; 
+  }
+
+  // Check duplicate UTR
+  const existing = (userData.fundRequests || []).find(r => r.txn === txn);
+  if (existing) { 
+    showToast('Yeh Transaction ID pehle se submit ho chuki hai!'); return; 
+  }
 
   if (!userData.fundRequests) userData.fundRequests = [];
   const req = {
@@ -1134,7 +1246,7 @@ window.submitFundRequest = function() {
   renderFundRequests();
   document.getElementById('fund-amount').value = '';
   document.getElementById('fund-txn').value = '';
-  showToast(`Fund request of Rs. ${amount} submitted! We will verify and add balance shortly.`);
+  showToast(`Fund request Rs. ${amount} submit ho gayi! Verification ke baad balance add hoga.`);
 };
 
 function renderFundRequests() {
