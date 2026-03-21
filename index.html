@@ -711,34 +711,51 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
       <div class="app-page" id="pg-new-order">
         <div class="order-form">
           <h2 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:1.5rem;">Place New Order</h2>
+
+          <!-- Platform Cards -->
           <div class="form-group">
-            <label class="form-label">Category</label>
-            <select class="form-select" id="of-category" onchange="onCategoryChange()">
+            <label class="form-label">Platform Select karo</label>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:.5rem;">
+              <div onclick="selectCat('instagram')" id="plt-ig" style="background:var(--ivory3);border:2px solid var(--border);border-radius:10px;padding:.8rem .5rem;text-align:center;cursor:pointer;transition:all .2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block;margin:0 auto .3rem;"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="#E1306C" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="#E1306C"/></svg>
+                <div style="font-size:.7rem;font-weight:700;">Instagram</div>
+              </div>
+              <div onclick="selectCat('youtube')" id="plt-yt" style="background:var(--ivory3);border:2px solid var(--border);border-radius:10px;padding:.8rem .5rem;text-align:center;cursor:pointer;transition:all .2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block;margin:0 auto .3rem;"><rect x="2" y="4" width="20" height="16" rx="4" stroke="#FF0000" stroke-width="2"/><polygon points="10,8 16,12 10,16" fill="#FF0000"/></svg>
+                <div style="font-size:.7rem;font-weight:700;">YouTube</div>
+              </div>
+              <div onclick="selectCat('facebook')" id="plt-fb" style="background:var(--ivory3);border:2px solid var(--border);border-radius:10px;padding:.8rem .5rem;text-align:center;cursor:pointer;transition:all .2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block;margin:0 auto .3rem;"><circle cx="12" cy="12" r="10" stroke="#1877F2" stroke-width="2"/><path d="M15 8h-1.5A1.5 1.5 0 0 0 12 9.5V11h3l-.5 3H12v7" stroke="#1877F2" stroke-width="2" stroke-linecap="round"/></svg>
+                <div style="font-size:.7rem;font-weight:700;">Facebook</div>
+              </div>
+            </div>
+            <select class="form-select" id="of-category" onchange="onCategoryChange()" style="display:none;">
               <option value="">Select Platform</option>
               <option value="instagram">Instagram</option>
               <option value="youtube">YouTube</option>
               <option value="facebook">Facebook</option>
             </select>
           </div>
+
           <div class="form-group">
             <label class="form-label">Service</label>
             <select class="form-select" id="of-service" onchange="onServiceChange()">
-              <option value="">Select category first</option>
+              <option value="">Pehle platform select karo</option>
             </select>
           </div>
           <div class="service-info-box" id="of-info" style="display:none;"></div>
           <div class="form-group">
             <label class="form-label">Link</label>
-            <input type="url" class="form-input" id="of-link" placeholder="Paste your Instagram / YouTube link"/>
+            <input type="url" class="form-input" id="of-link" placeholder="Apna Instagram / YouTube link paste karo"/>
           </div>
           <div class="form-group">
             <label class="form-label">Quantity</label>
-            <input type="number" class="form-input" id="of-qty" placeholder="Enter quantity" oninput="calcCharge()"/>
+            <input type="number" class="form-input" id="of-qty" placeholder="Kitna chahiye?" oninput="calcCharge()"/>
             <div class="min-max" id="of-minmax"></div>
           </div>
           <div class="form-group">
-            <label class="form-label">Charge</label>
-            <div class="charge-box" id="of-charge">Rs. 0.00 <span>Enter quantity above</span></div>
+            <label class="form-label">Total Charge</label>
+            <div class="charge-box" id="of-charge">Rs. 0.00 <span>Quantity daalo</span></div>
           </div>
           <button class="submit-btn" id="order-submit-btn" onclick="placeOrder()">Submit Order</button>
         </div>
@@ -1140,34 +1157,29 @@ window.calcResult = function() {
   document.getElementById('calc-price').textContent = `Rs. ${parseFloat(price).toLocaleString('en-IN', {minimumFractionDigits:2})}`;
   document.getElementById('calc-breakdown').textContent = `${qty.toLocaleString()} ${svc.name} × Rs. ${svc.rate}/1,000`;
 };
-let allServices = []; // loaded from smmadx API
+let allServices = [];
 let selectedService = null;
 
-// Load services from smmadx on app start
+// Don't override local categories - keep Instagram/YouTube/Facebook
 async function loadSmmServices() {
-  const catSel = document.getElementById('of-category');
-  if (!catSel) return;
-  try {
-    const res = await fetch('/api/order', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({action:'services'})
-    });
-    const data = await res.json();
-    if (Array.isArray(data)) {
-      allServices = data;
-      // Get unique categories
-      const cats = [...new Set(data.map(s => s.category))];
-      catSel.innerHTML = '<option value="">Select Category</option>';
-      cats.forEach(c => {
-        catSel.innerHTML += `<option value="${c}">${c}</option>`;
-      });
-    }
-  } catch(e) {
-    // fallback static services
-    catSel.innerHTML = '<option value="">Instagram</option><option value="YouTube">YouTube</option>';
-  }
+  // Local SERVICES data use karo - smmadx API categories confusing hoti hain
+  // Category dropdown already HTML mein set hai
 }
+
+window.selectCat = function(platform) {
+  // Update card UI
+  ['ig','yt','fb'].forEach(p => {
+    const el = document.getElementById('plt-'+p);
+    if(el) { el.style.borderColor='var(--border)'; el.style.background='var(--ivory3)'; }
+  });
+  const map = {instagram:'ig', youtube:'yt', facebook:'fb'};
+  const card = document.getElementById('plt-'+map[platform]);
+  if(card) { card.style.borderColor='var(--teal)'; card.style.background='var(--teal3)'; }
+  // Set hidden select and trigger change
+  const sel = document.getElementById('of-category');
+  sel.value = platform;
+  onCategoryChange();
+};
 
 window.onCategoryChange = function() {
   const cat = document.getElementById('of-category').value;
