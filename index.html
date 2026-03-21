@@ -962,21 +962,21 @@ footer { background:var(--dark); padding:3rem 4rem 2rem; }
 const SERVICES = {
   instagram: [
     {id:'ig-followers',name:'Instagram Followers',rate:17/1000,min:100,max:100000000,refill:'30 Days',smmId:'2',info:'Real followers. Gradual delivery for safety.'},
-    {id:'ig-likes',name:'Instagram Likes',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'3',info:'Instant likes. Lifetime refill guarantee.'},
-    {id:'ig-views',name:'Instagram Views / Reels Views',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'1',info:'Fast delivery views for posts and reels.'},
-    {id:'ig-story',name:'Instagram Story Views',rate:0.70/1000,min:100,max:100000000,refill:'None',smmId:'4',info:'Fast delivery story views.'},
+    {id:'ig-likes',name:'Instagram Likes',rate:0.07/1000,min:100,max:100000000,refill:'Lifetime',smmId:'3',info:'Instant likes. Lifetime refill guarantee.'},
+    {id:'ig-views',name:'Instagram Views / Reels Views',rate:0.07/1000,min:100,max:100000000,refill:'Lifetime',smmId:'1',info:'Fast delivery views for posts and reels.'},
+    {id:'ig-story',name:'Instagram Story Views',rate:0.07/1000,min:100,max:100000000,refill:'None',smmId:'4',info:'Fast delivery story views.'},
     {id:'ig-comments',name:'Instagram Comments (Custom)',rate:50/50,min:10,max:5000,refill:'None',smmId:'5',info:'Custom comments. Contact WhatsApp after order.'},
   ],
   youtube: [
-    {id:'yt-views',name:'YouTube Views',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'6',info:'High-retention YouTube views. Safe for monetization.'},
-    {id:'yt-likes',name:'YouTube Likes',rate:0.70/1000,min:100,max:100000000,refill:'Lifetime',smmId:'7',info:'Real-looking likes for any YouTube video.'},
+    {id:'yt-views',name:'YouTube Views',rate:0.07/1000,min:100,max:100000000,refill:'Lifetime',smmId:'6',info:'High-retention YouTube views. Safe for monetization.'},
+    {id:'yt-likes',name:'YouTube Likes',rate:0.07/1000,min:100,max:100000000,refill:'Lifetime',smmId:'7',info:'Real-looking likes for any YouTube video.'},
     {id:'yt-subs',name:'YouTube Subscribers',rate:25/1000,min:100,max:100000000,refill:'30 Days',smmId:'8',info:'Channel subscribers. Gradual delivery.'},
     {id:'yt-comments',name:'YouTube Comments',rate:60/50,min:10,max:5000,refill:'None',smmId:'9',info:'Custom YouTube comments. Contact WhatsApp after order.'},
     {id:'yt-hours',name:'YouTube Watch Hours',rate:180/500,min:100,max:10000,refill:'None',smmId:'10',info:'Real watch hours for monetization eligibility.'},
   ],
   facebook: [
     {id:'fb-followers',name:'Facebook Followers',rate:4.70/1000,min:100,max:100000000,refill:'None',smmId:'11',info:'Facebook page/profile followers.'},
-    {id:'fb-views',name:'Facebook Views',rate:1.70/1000,min:100,max:100000000,refill:'None',smmId:'12',info:'Facebook video views.'},
+    {id:'fb-views',name:'Facebook Views',rate:0.07/1000,min:100,max:100000000,refill:'None',smmId:'12',info:'Facebook video views.'},
   ]
 };
 
@@ -1110,21 +1110,21 @@ function renderDashboard() {
 const CALC_RATES = {
   instagram: [
     {id:'ig-followers', name:'Followers', rate:17},
-    {id:'ig-likes', name:'Likes', rate:0.70},
-    {id:'ig-views', name:'Views / Reels Views', rate:0.70},
-    {id:'ig-story', name:'Story Views', rate:0.70},
+    {id:'ig-likes', name:'Likes', rate:0.07},
+    {id:'ig-views', name:'Views / Reels Views', rate:0.07},
+    {id:'ig-story', name:'Story Views', rate:0.07},
     {id:'ig-comments', name:'Comments', rate:1000},
   ],
   youtube: [
-    {id:'yt-views', name:'Views', rate:0.70},
-    {id:'yt-likes', name:'Likes', rate:0.70},
+    {id:'yt-views', name:'Views', rate:0.07},
+    {id:'yt-likes', name:'Likes', rate:0.07},
     {id:'yt-subs', name:'Subscribers', rate:25},
     {id:'yt-comments', name:'Comments', rate:1000},
     {id:'yt-hours', name:'Watch Hours', rate:180},
   ],
   facebook: [
     {id:'fb-followers', name:'Followers', rate:4.70},
-    {id:'fb-views', name:'Views', rate:1.70},
+    {id:'fb-views', name:'Views', rate:0.07},
   ]
 };
 
@@ -1424,25 +1424,26 @@ const SYS = `You are iDELL Haiku AI — ULTRA STRICT official AI assistant of iD
 ════════════════════════════════════
 INSTAGRAM:
 • Followers    → Rs. 17 per 1,000
-• Likes        → Rs. 0.70 per 1,000
-• Views/Reels  → Rs. 0.70 per 1,000
-• Story Views  → Rs. 0.70 per 1,000
+• Likes        → Rs. 0.07 per 1,000 (10K = Rs. 0.70)
+• Views/Reels  → Rs. 0.07 per 1,000 (10K = Rs. 0.70)
+• Story Views  → Rs. 0.07 per 1,000 (10K = Rs. 0.70)
 • Comments     → Rs. 50 = 50 comments
 
 YOUTUBE:
-• Views        → Rs. 0.70 per 1,000
-• Likes        → Rs. 0.70 per 1,000
-• Subscribers  → Rs. 25 per 1,000
+• Views        → Rs. 0.07 per 1,000 (10K = Rs. 0.70)
+• Likes        → Rs. 0.07 per 1,000 (10K = Rs. 0.70)
+• Subscribers  → Rs. 25 per 1,000 (10K = Rs. 250)
 • Comments     → Rs. 60 = 50 comments
 • Watch Hours  → Rs. 180 = 500 hours
 
 FACEBOOK:
 • Followers    → Rs. 4.70 per 1,000
-• Views        → Rs. 1.70 per 1,000
+• Views        → Rs. 0.07 per 1,000
 
 QUICK EXAMPLES:
-• 10K Instagram Views = Rs. 7
-• 10K YouTube Views = Rs. 7
+• 10K Instagram Views = Rs. 0.70
+• 1L Instagram Views = Rs. 7.00
+• 10K YouTube Views = Rs. 0.70
 • 1K Instagram Followers = Rs. 17
 • 10K Instagram Followers = Rs. 170
 • 1K YouTube Subscribers = Rs. 25
