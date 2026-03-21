@@ -1223,8 +1223,6 @@ function getSelectedServiceData() {
 }
 
 
-
-/* ===================== FUND REQUESTS ===================== */
 window.submitFundRequest = function() {
   const amount = parseFloat(document.getElementById('fund-amount').value);
   const txn = document.getElementById('fund-txn').value.trim();
@@ -1277,30 +1275,6 @@ function renderFundRequests() {
     </div>`).join('');
 }
 
-function getSelectedService() {
-  const id = document.getElementById('of-service').value;
-  if (!selectedPlatform || !id) return null;
-  return SERVICES[selectedPlatform].find(s => s.id === id) || null;
-}
-
-function updateServiceInfo() {
-  const svc = getSelectedService();
-  const info = document.getElementById('of-info');
-  if (!svc) { info.style.display = 'none'; return; }
-  info.style.display = 'block';
-  info.innerHTML = `<strong>${svc.name}</strong><br/>Min: ${svc.min.toLocaleString()} — Max: ${svc.max.toLocaleString()} &nbsp;|&nbsp; Refill: ${svc.refill}<br/>${svc.info}`;
-  document.getElementById('of-minmax').textContent = `Min: ${svc.min.toLocaleString()} — Max: ${svc.max.toLocaleString()}`;
-  document.getElementById('of-qty').value = '';
-  calcCharge();
-}
-
-function calcCharge() {
-  const svc = getSelectedService();
-  const qty = parseInt(document.getElementById('of-qty').value) || 0;
-  if (!svc || !qty) { document.getElementById('of-charge').innerHTML = 'Rs. 0.00 <span>Enter quantity to calculate</span>'; return; }
-  const charge = (svc.rate * qty).toFixed(2);
-  document.getElementById('of-charge').innerHTML = `Rs. ${charge}`;
-}
 
 window.placeOrder=async function(){
   const svc = selectedService;
