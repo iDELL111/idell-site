@@ -1012,10 +1012,11 @@ function showApp() {
   document.getElementById('page-login').classList.remove('show');
   document.getElementById('page-app').style.display = 'block';
   document.getElementById('chat-fab').style.display = 'flex';
+  applyAdminBalance();
   refreshUI();
   renderDashboard();
   renderOrders('all');
-  loadSmmServices(); // Load real services from smmadx
+  loadSmmServices();
 }
 
 function gotoPage(page) {
@@ -1075,7 +1076,23 @@ window.addEventListener('load', () => {
   document.getElementById('chat-fab').style.display = 'none';
 });
 
-/* ===================== UI REFRESH ===================== */
+/* ===================== ADMIN ===================== */
+const ADMIN_EMAIL = 'rambaisaket03@gmail.com';
+const ADMIN_BALANCE = 99999;
+
+function checkAdmin() {
+  if (!currentUser) return false;
+  return currentUser.email === ADMIN_EMAIL;
+}
+
+function applyAdminBalance() {
+  if (checkAdmin()) {
+    if (userData.balance < ADMIN_BALANCE) {
+      userData.balance = ADMIN_BALANCE;
+      saveData();
+    }
+  }
+}
 function refreshUI() {
   if (!currentUser) return;
   const name = currentUser.displayName || currentUser.email || 'User';
