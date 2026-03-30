@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   try {
     const body = req.body;
 
-    // Strict validation
     if (!body || !body.action) {
       return res.status(400).json({ error: 'Action required' });
     }
