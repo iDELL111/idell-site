@@ -1,0 +1,3046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+<title>iDELL Haiku — India's Smartest SMM Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkgpW6vIMxwWy93gXXL2gQIBYMOS8lgjM",
+    authDomain: "idell-haiku-570d0.firebaseapp.com",
+    projectId: "idell-haiku-570d0",
+    storageBucket: "idell-haiku-570d0.firebasestorage.app",
+    messagingSenderId: "587320711917",
+    appId: "1:587320711917:web:3e3a6291f4540fd3c50ae4"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  window._fbAuth = auth;
+  window._fbProvider = provider;
+  window._fbSignIn = () => signInWithPopup(auth, provider);
+  window._fbSignOut = () => signOut(auth);
+  window._fbOnAuth = (cb) => onAuthStateChanged(auth, cb);
+</script>
+
+<style>
+/* ============================================================
+   CSS VARIABLES — THEME-AWARE (English default)
+   ============================================================ */
+:root {
+  --bg: #FDF5F0;        /* seashell */
+  --bg2: #F8F0E8;       /* off white */
+  --bg3: #FFFBF8;
+  --surface: #FFFFFF;
+  --surface2: #F9F4EF;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(15,158,153,0.22);
+  --text: #1a1a1a;
+  --text2: #4a4a4a;
+  --muted: #8a8a8a;
+  --accent: #0F9E99;
+  --accent2: #0d8a85;
+  --accent-glow: rgba(15,158,153,0.22);
+  --accent-tint: rgba(15,158,153,0.1);
+  --dark: #1a1a1a;
+  --dark2: #242424;
+  --red: #e03030;
+  --green: #1a9e5a;
+  --r: 12px;
+  --tr: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+body.theme-hindi {
+  --bg: #FFF0F0;        /* pinkish cream */
+  --bg2: #FDE8E3;       /* rose wood light */
+  --bg3: #FFF5F2;
+  --surface: #FFFFFF;
+  --surface2: #FDF0EB;
+  --border: rgba(180,60,80,0.12);
+  --border2: rgba(192,57,43,0.28);
+  --accent: #C0392B;    /* redwood */
+  --accent2: #a93226;
+  --accent-glow: rgba(192,57,43,0.2);
+  --accent-tint: rgba(192,57,43,0.09);
+  --dark: #2d1b1b;
+  --dark2: #3d2525;
+}
+body.theme-hinglish {
+  --bg: #F0F8FF;        /* alice blue */
+  --bg2: #E6F0FA;       /* light azure */
+  --bg3: #F5FBFF;
+  --surface: #FFFFFF;
+  --surface2: #ECF5FF;
+  --border: rgba(30,90,200,0.1);
+  --border2: rgba(37,99,235,0.25);
+  --accent: #1D4ED8;    /* denim */
+  --accent2: #1e40af;
+  --accent-glow: rgba(29,78,216,0.2);
+  --accent-tint: rgba(29,78,216,0.09);
+  --dark: #1e1b2e;
+  --dark2: #252237;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', 'Outfit', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+button {
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+}
+input,
+select,
+textarea {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ============================================================
+   LANGUAGE GATE (always shown first)
+   ============================================================ */
+#lang-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  transition: opacity 0.35s;
+}
+#lang-gate.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.lang-box {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 2.8rem 2.5rem;
+  width: min(440px, 95vw);
+  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.lang-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+}
+.lang-logo span {
+  color: var(--accent);
+}
+.lang-sub {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 2.2rem;
+  line-height: 1.5;
+}
+.lang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+.lang-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--surface2);
+}
+.lang-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+  transform: translateY(-2px);
+}
+.lang-card.sel {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+.lang-card .lc-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+.lang-card .lc-sub {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.lang-enter-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.lang-enter-btn.ready {
+  opacity: 1;
+  pointer-events: all;
+}
+.lang-enter-btn.ready:hover {
+  background: var(--accent2);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+#prog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  z-index: 1000;
+  background: linear-gradient(90deg, var(--accent), #0dcec8);
+  transition: width 0.1s linear;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: none;
+  transition: all var(--tr);
+}
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+.btn-accent:hover {
+  background: var(--accent2);
+  transform: translateY(-1px);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+#page-landing {
+  display: block;
+}
+#page-login {
+  display: none;
+}
+#page-app {
+  display: none;
+}
+#page-landing.show {
+  display: block;
+}
+#page-login.show {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg);
+}
+#page-app.show {
+  display: block;
+}
+
+/* ============================================================
+   LANDING — NAV
+   ============================================================ */
+.land-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 4rem;
+  background: rgba(253, 245, 240, 0.9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+body.theme-hindi .land-nav {
+  background: rgba(255, 240, 240, 0.9);
+}
+body.theme-hinglish .land-nav {
+  background: rgba(240, 248, 255, 0.9);
+}
+.land-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.land-logo span {
+  color: var(--accent);
+}
+.land-nav-links {
+  display: flex;
+  gap: 1.8rem;
+  list-style: none;
+}
+.land-nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color var(--tr);
+}
+.land-nav-links a:hover {
+  color: var(--accent);
+}
+.land-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rem 4rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 55% 50% at 80% 15%, var(--accent-tint) 0%, transparent 65%),
+              radial-gradient(ellipse 40% 40% at 15% 80%, var(--accent-tint) 0%, transparent 60%);
+}
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.hero-tag {
+  display: inline-block;
+  background: var(--accent-tint);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.9rem;
+  border-radius: 100px;
+  margin-bottom: 1.2rem;
+  animation: fadeUp 0.55s ease both;
+}
+h1.hero-h {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.3rem, 4.2vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  animation: fadeUp 0.65s 0.08s ease both;
+}
+h1.hero-h .accent {
+  color: var(--accent);
+}
+.hero-p {
+  font-size: 0.93rem;
+  color: var(--text2);
+  line-height: 1.8;
+  max-width: 440px;
+  margin-bottom: 1.8rem;
+  animation: fadeUp 0.65s 0.15s ease both;
+}
+.hero-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  animation: fadeUp 0.65s 0.22s ease both;
+}
+.hero-visual {
+  animation: fadeUp 0.75s 0.12s ease both;
+}
+.dp-card-wrap {
+  background: var(--dark);
+  border-radius: 18px;
+  padding: 1.4rem;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+}
+.dp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+}
+.dp-logo-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.88rem;
+  color: #fff;
+  font-weight: 700;
+}
+.dp-logo-text span {
+  color: var(--accent);
+}
+.dp-live {
+  font-size: 0.62rem;
+  color: var(--accent);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dp-live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: block;
+  animation: pulse-dot 1.6s ease infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.dp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+.dp-mini {
+  background: var(--dark2);
+  border-radius: 9px;
+  padding: 0.8rem;
+}
+.dp-mini-lbl {
+  font-size: 0.58rem;
+  color: #888;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+.dp-mini-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+.dp-mini-val span {
+  color: var(--accent);
+}
+.dp-services {
+  background: var(--dark2);
+  border-radius: 9px;
+  padding: 0.9rem;
+}
+.dp-svc-title {
+  font-size: 0.62rem;
+  color: #888;
+  margin-bottom: 0.6rem;
+}
+.dp-svc-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.dp-svc-item:last-child {
+  border: none;
+}
+.dp-svc-name {
+  font-size: 0.72rem;
+  color: #ccc;
+}
+.dp-svc-price {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   LANDING SECTIONS
+   ============================================================ */
+.divider {
+  height: 1px;
+  background: var(--border);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 4rem;
+}
+.sec-tag {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.sec-h {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+}
+.sec-h .accent {
+  color: var(--accent);
+}
+.sec-p {
+  font-size: 0.88rem;
+  color: var(--text2);
+  max-width: 480px;
+  line-height: 1.75;
+  margin-bottom: 2.2rem;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.on {
+  opacity: 1;
+  transform: none;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.6rem;
+  position: relative;
+  transition: border-color var(--tr), transform var(--tr);
+}
+.step-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--accent-tint);
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  line-height: 1;
+  opacity: 0.3;
+}
+.step-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--accent-tint);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.9rem;
+}
+.step-icon svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.step-card h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.step-card p {
+  font-size: 0.77rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+}
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.faq-q {
+  padding: 0.95rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background var(--tr);
+  color: var(--text);
+}
+.faq-q:hover {
+  background: var(--accent-tint);
+}
+.faq-q::after {
+  content: '+';
+  font-size: 1rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform var(--tr);
+}
+.faq-item.open .faq-q::after {
+  transform: rotate(45deg);
+}
+.faq-ans {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.faq-item.open .faq-ans {
+  max-height: 160px;
+}
+.faq-ans p {
+  padding: 0.1rem 1.2rem 0.9rem;
+  font-size: 0.8rem;
+  color: var(--text2);
+  line-height: 1.65;
+}
+footer {
+  background: var(--dark);
+  padding: 2.5rem 4rem 1.8rem;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+.footer-brand span {
+  color: var(--accent);
+}
+.footer-desc {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+.footer-ig {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #aaa;
+  transition: color 0.2s;
+}
+.footer-ig:hover {
+  color: #e1306c;
+}
+.footer-ig svg {
+  width: 16px;
+  height: 16px;
+}
+.footer-copy {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1.2rem;
+  margin-top: 1.2rem;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  color: #555;
+}
+.footer-copy a {
+  color: var(--accent);
+}
+
+/* ============================================================
+   LOGIN PAGE (Soft Pink Google Button)
+   ============================================================ */
+.login-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 22px;
+  padding: 2.8rem 2.5rem;
+  width: min(420px, 96vw);
+  box-shadow: 0 12px 50px rgba(0, 0, 0, 0.09);
+  text-align: center;
+}
+.login-logo-mark {
+  width: 64px;
+  height: 64px;
+  background: var(--accent-tint);
+  border: 2px solid var(--border2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+}
+.login-logo-mark svg {
+  width: 30px;
+  height: 30px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.login-brand {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+}
+.login-brand span {
+  color: var(--accent);
+}
+.login-tagline {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.login-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 2rem;
+}
+.google-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #FFB7C5 0%, #FF91A4 50%, #F472B6 100%);
+  border: none;
+  border-radius: 14px;
+  padding: 0.95rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #5a1a2a;
+  cursor: pointer;
+  transition: all var(--tr);
+  box-shadow: 0 4px 20px rgba(244, 114, 182, 0.3);
+  font-family: 'Outfit', sans-serif;
+}
+.google-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(244, 114, 182, 0.4);
+}
+.google-btn svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.2rem 0;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.login-note {
+  font-size: 0.7rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.login-note a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ============================================================
+   APP LAYOUT
+   ============================================================ */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+.sidebar {
+  width: 230px;
+  background: var(--dark);
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 800;
+  transition: transform var(--tr);
+}
+.sb-logo {
+  padding: 1.3rem 1.4rem 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.sb-logo-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+}
+.sb-logo-text span {
+  color: var(--accent);
+}
+.sb-user {
+  padding: 0.9rem 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.sb-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #fff;
+  overflow: hidden;
+}
+.sb-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sb-uname {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sb-balance {
+  font-size: 0.66rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+.sb-nav {
+  flex: 1;
+  padding: 0.8rem 0;
+  overflow-y: auto;
+}
+.sb-group {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #555;
+  padding: 0.35rem 1.4rem;
+  margin-top: 0.4rem;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #aaa;
+  cursor: pointer;
+  transition: all var(--tr);
+  border-left: 2px solid transparent;
+}
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+.nav-item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.sb-bottom {
+  padding: 0.9rem 1.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.signout-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #aaa;
+  padding: 0.6rem;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--tr);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: 'Outfit', sans-serif;
+}
+.signout-btn:hover {
+  background: rgba(224, 48, 48, 0.12);
+  color: #e07070;
+}
+.app-main {
+  margin-left: 230px;
+  flex: 1;
+  min-height: 100vh;
+}
+.app-topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.85rem 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 700;
+}
+.tb-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.tb-right {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.balance-pill {
+  background: var(--accent-tint);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  padding: 0.3rem 0.85rem;
+  border-radius: 100px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.app-page {
+  display: none;
+  padding: 1.8rem;
+}
+.app-page.active {
+  display: block;
+}
+.form-group {
+  margin-bottom: 1.2rem;
+}
+.form-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+  display: block;
+  letter-spacing: 0.02em;
+}
+.form-input,
+.form-select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0.72rem 0.95rem;
+  font-size: 0.84rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.18s;
+}
+.form-input:focus,
+.form-select:focus {
+  border-color: var(--accent);
+}
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='11' height='7' viewBox='0 0 11 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5.5 6L10 1' stroke='%238a8a8a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.3rem;
+  cursor: pointer;
+}
+.submit-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 0.85rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--tr);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+.submit-btn:hover {
+  background: var(--accent2);
+  transform: translateY(-1px);
+}
+.submit-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.8rem;
+}
+.dash-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.2rem 1.4rem;
+}
+.dash-stat-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.dash-stat-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.dash-stat-val.c {
+  color: var(--accent);
+}
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+}
+.dash-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.4rem;
+}
+.dash-card h3 {
+  font-size: 0.83rem;
+  font-weight: 700;
+  margin-bottom: 0.9rem;
+}
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.quick-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all var(--tr);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.quick-btn:hover {
+  background: var(--accent-tint);
+  border-color: var(--border2);
+  color: var(--accent);
+}
+.quick-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.orders-table th {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.orders-table td {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.78rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+}
+.orders-table tr:last-child td {
+  border: none;
+}
+.status-badge {
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 100px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.s-pending {
+  background: #fff3e0;
+  color: #c07000;
+}
+.s-processing {
+  background: var(--accent-tint);
+  color: var(--accent);
+  animation: glow-proc 1.5s ease infinite;
+}
+.s-completed {
+  background: #e8f5e9;
+  color: #1a9e5a;
+}
+.s-cancelled {
+  background: #ffeaea;
+  color: #e03030;
+}
+@keyframes glow-proc {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 8px var(--accent-glow); }
+}
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+.empty-state svg {
+  width: 44px;
+  height: 44px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.5;
+  margin: 0 auto 0.9rem;
+  display: block;
+}
+.empty-state p {
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+/* ============================================================
+   NEW ORDER & CALCULATOR (Expandable)
+   ============================================================ */
+.order-form {
+  max-width: 680px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.8rem;
+}
+.order-form h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 1.4rem;
+}
+.plt-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.65rem;
+}
+.plt-card {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 11px;
+  padding: 0.85rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.plt-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+.plt-card.selected {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+.plt-logo {
+  width: 34px;
+  height: 34px;
+  display: block;
+  margin: 0 auto 0.35rem;
+  transition: transform 0.25s;
+}
+.plt-card:hover .plt-logo {
+  transform: scale(1.12) rotate(-4deg);
+}
+.plt-card.selected .plt-logo {
+  animation: logo-pulse 1.6s ease infinite;
+}
+@keyframes logo-pulse {
+  0%, 100% { transform: scale(1.08); }
+  50% { transform: scale(1.16); }
+}
+.plt-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.charge-box {
+  background: var(--accent-tint);
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 0.8rem 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.charge-box span {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 0.3rem;
+}
+.min-max {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+.svc-info {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 0.95rem;
+  font-size: 0.79rem;
+  color: var(--text2);
+  line-height: 1.5;
+  margin-bottom: 0.9rem;
+  display: none;
+}
+.calc-wrap {
+  max-width: 500px;
+}
+.calc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.5rem;
+}
+.calc-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+.calc-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--accent-tint);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.calc-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.calc-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.calc-sub {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+.calc-result {
+  display: none;
+  background: var(--accent-tint);
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 0.8rem;
+}
+.calc-result-label {
+  font-size: 0.63rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.calc-result-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.calc-result-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.calc-result-break {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+.filter-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.3rem;
+}
+.filter-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 0.38rem 0.9rem;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all var(--tr);
+}
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.order-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.1rem 1.3rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.9rem;
+  align-items: center;
+}
+.order-id {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.order-svc {
+  font-size: 0.84rem;
+  font-weight: 600;
+  margin-bottom: 0.18rem;
+}
+.order-meta {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.order-right {
+  text-align: right;
+}
+.order-amount {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.funds-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+  max-width: 680px;
+}
+.funds-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.6rem;
+  text-align: center;
+}
+.funds-card h3 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 0.45rem;
+}
+.funds-card p {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.qr-wrap {
+  margin: 0 auto 1rem;
+  width: fit-content;
+}
+.qr-img {
+  width: 190px;
+  height: 190px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  display: block;
+}
+.upi-chip {
+  display: inline-block;
+  background: var(--accent-tint);
+  border: 1px solid var(--border2);
+  color: var(--accent);
+  padding: 0.35rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: monospace;
+}
+.pay-confirm-box {
+  display: none;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.6rem;
+  max-width: 460px;
+  margin-top: 1.5rem;
+}
+.pay-confirm-box.show {
+  display: block;
+}
+.pay-confirm-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.pay-confirm-sub {
+  font-size: 0.85rem;
+  color: var(--text2);
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+.pay-upload-label {
+  display: block;
+  background: var(--surface2);
+  border: 2px dashed var(--border2);
+  border-radius: 10px;
+  padding: 1.4rem;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+.pay-upload-label:hover {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+.pay-upload-label svg {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 0.5rem;
+  display: block;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+}
+.wa-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+}
+.wa-btn:hover {
+  background: #1ebe5c;
+  transform: translateY(-1px);
+}
+.wa-arrow-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.note-box {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 9px;
+  padding: 0.75rem 0.95rem;
+  font-size: 0.75rem;
+  color: #78450a;
+  line-height: 1.55;
+  margin-top: 0.9rem;
+}
+.fund-form-label {
+  font-size: 0.72rem;
+  color: var(--text2);
+  margin-bottom: 0.35rem;
+  display: block;
+  font-weight: 600;
+}
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--dark);
+  color: #fff;
+  padding: 0.65rem 1.4rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.28s;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+}
+.mobile-menu-btn svg {
+  width: 21px;
+  height: 21px;
+  stroke: var(--text);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.sb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 799;
+}
+.touch-ripple {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99000;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  margin-top: -16px;
+  border-radius: 50%;
+  background: rgba(248, 248, 255, 0.7); /* Ghost White */
+  animation: ripple-anim 0.55s ease-out forwards;
+}
+@keyframes ripple-anim {
+  0% {
+    transform: scale(0);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+.scroll-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99001;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: rgba(245, 245, 245, 0.5); /* White Dove */
+  animation: trail-anim 0.4s ease-out forwards;
+}
+@keyframes trail-anim {
+  0% {
+    opacity: 0.6;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+#chat-fab {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  z-index: 9000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px var(--accent-glow);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s;
+}
+#chat-fab:hover {
+  transform: scale(1.1);
+}
+#chat-fab.fab-hide {
+  transform: translateY(80px) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+#chat-fab svg {
+  width: 21px;
+  height: 21px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.fab-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e03030;
+  border: 2px solid var(--bg);
+  font-size: 7px;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#chat-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s;
+}
+#chat-screen.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.chat-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.chat-ident {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chat-av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.chat-ident-info h4 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.chat-ident-info p {
+  font-size: 0.59rem;
+  color: var(--accent);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.chat-ident-info p::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: block;
+  animation: pulse-dot 1.6s ease infinite;
+}
+.chat-modes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface2);
+  border-radius: 9px;
+  padding: 3px;
+}
+.chat-mode-btn {
+  background: transparent;
+  border: none;
+  padding: 4px 11px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted);
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.16s;
+  white-space: nowrap;
+}
+.chat-mode-btn.on {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+.chat-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: flex-end;
+}
+.chat-x {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.16s;
+}
+.chat-x:hover {
+  background: var(--bg2);
+}
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px max(12px, calc(50% - 380px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+.chat-body::-webkit-scrollbar {
+  width: 3px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+.cmsg-wrap {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  gap: 4px;
+  max-width: 660px;
+  width: 100%;
+}
+.cmsg-wrap.u-wrap {
+  align-self: flex-end;
+  max-width: 500px;
+}
+.cmsg {
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 0.83rem;
+  line-height: 1.65;
+  animation: msgIn 0.18s ease;
+  word-break: break-word;
+}
+@keyframes msgIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.cmsg.bot {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 3px;
+  color: var(--text);
+}
+.cmsg.usr {
+  background: var(--accent-tint);
+  border: 1px solid var(--border2);
+  border-bottom-right-radius: 3px;
+  color: var(--text);
+  align-self: flex-end;
+}
+.cmsg code {
+  background: var(--accent-tint);
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.76rem;
+}
+.cmsg pre {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px;
+  overflow-x: auto;
+  margin: 6px 0;
+}
+.cact {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.16s;
+  padding: 0 3px;
+}
+.cmsg-wrap:hover .cact,
+.cmsg-wrap:focus-within .cact {
+  opacity: 1;
+}
+.cact-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 0.57rem;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.13s;
+}
+.cact-btn:hover {
+  background: var(--accent-tint);
+  color: var(--accent);
+  border-color: var(--border2);
+}
+.cthink {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  width: fit-content;
+  animation: msgIn 0.18s ease;
+}
+.cspin {
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cthink-lbl {
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.ccursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.8em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cur 0.6s steps(1) infinite;
+}
+@keyframes cur {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.cquick {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 7px max(12px, calc(50% - 380px)) 0;
+}
+.cquick-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  color: var(--accent);
+  border-radius: 100px;
+  padding: 5px 12px;
+  font-size: 0.67rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.16s;
+  white-space: nowrap;
+  font-family: 'Outfit', sans-serif;
+}
+.cquick-btn:hover {
+  background: var(--accent-tint);
+  transform: translateY(-1px);
+}
+.chat-foot {
+  padding: 9px max(12px, calc(50% - 380px)) 14px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.chat-box {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.18s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.chat-box:focus-within {
+  border-color: var(--accent);
+}
+#ci {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 11px 13px 8px;
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  resize: none;
+  outline: none;
+  max-height: 100px;
+  line-height: 1.5;
+}
+#ci::placeholder {
+  color: var(--muted);
+}
+.chat-foot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px 8px;
+}
+.chat-left-ico {
+  display: flex;
+  gap: 4px;
+}
+.c-ico {
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
+  background: none;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.13s;
+}
+.c-ico:hover {
+  background: var(--accent-tint);
+  color: var(--accent);
+  border-color: var(--border2);
+}
+.c-ico svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+#csend {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px var(--accent-glow);
+  transition: opacity 0.16s, transform 0.16s;
+}
+#csend:hover {
+  opacity: 0.88;
+  transform: scale(1.07);
+}
+#csend:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+#csend svg {
+  width: 13px;
+  height: 13px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.chat-hint {
+  text-align: center;
+  font-size: 0.58rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(26, 26, 26, 0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-bg.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  width: min(340px, 90vw);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1);
+  transform: translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.modal-bg.show .modal-card {
+  transform: translateY(0);
+}
+.modal-ttl {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+.modal-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.modal-txt {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px;
+  font-size: 0.68rem;
+  color: var(--text2);
+  line-height: 1.6;
+  max-height: 130px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  margin-bottom: 12px;
+}
+.modal-btns {
+  display: flex;
+  gap: 6px;
+}
+.modal-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 100px;
+  border: none;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.73rem;
+  cursor: pointer;
+  transition: all 0.13s;
+}
+.modal-btn.prim {
+  background: var(--accent);
+  color: #fff;
+}
+.modal-btn.prim:hover {
+  background: var(--accent2);
+}
+.modal-btn.sec {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.modal-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.modal-input:focus {
+  border-color: var(--accent);
+}
+@media (max-width: 900px) {
+  .land-nav {
+    padding: 0.8rem 1.4rem;
+  }
+  .land-nav-links {
+    display: none;
+  }
+  .hero {
+    padding: 6rem 1.4rem 3rem;
+  }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .hero-visual {
+    display: none;
+  }
+  .section {
+    padding: 3.5rem 1.4rem;
+  }
+  footer {
+    padding: 2.2rem 1.4rem 1.6rem;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .sb-overlay {
+    display: block;
+  }
+  .app-main {
+    margin-left: 0;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+  .funds-grid {
+    grid-template-columns: 1fr;
+  }
+  .app-page {
+    padding: 1.2rem;
+  }
+  .order-card {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+  .order-right {
+    text-align: left;
+  }
+  .order-form {
+    padding: 1.2rem;
+  }
+  .chat-bar {
+    grid-template-columns: 1fr auto;
+  }
+  .chat-modes {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<!-- ===================================================
+     LANGUAGE GATE
+     =================================================== -->
+<div id="lang-gate">
+  <div class="lang-box">
+    <div class="lang-logo">iDELL <span>Haiku</span></div>
+    <div class="lang-sub" id="lang-gate-sub">Select your language to continue<br>Apni bhasha chunein</div>
+    <div class="lang-grid">
+      <div class="lang-card" onclick="selectLang('english',this)">
+        <div class="lc-name">English</div>
+        <div class="lc-sub">Standard English</div>
+      </div>
+      <div class="lang-card" onclick="selectLang('hindi',this)">
+        <div class="lc-name">हिंदी</div>
+        <div class="lc-sub">Pure Hindi UI</div>
+      </div>
+      <div class="lang-card" onclick="selectLang('hinglish',this)">
+        <div class="lc-name">Hinglish</div>
+        <div class="lc-sub">Hindi in English</div>
+      </div>
+    </div>
+    <button class="lang-enter-btn" id="lang-enter-btn" onclick="enterSite()">Enter Site</button>
+  </div>
+</div>
+
+<!-- ===================================================
+     LANDING PAGE
+     =================================================== -->
+<div id="page-landing">
+
+<nav class="land-nav">
+  <div class="land-logo">iDELL <span>Haiku</span></div>
+  <ul class="land-nav-links">
+    <li><a href="#services" data-t="nav.services">Services</a></li>
+    <li><a href="#how" data-t="nav.how">How It Works</a></li>
+    <li><a href="#faq" data-t="nav.faq">FAQ</a></li>
+  </ul>
+  <div class="land-nav-right">
+    <button class="btn btn-outline" onclick="showLogin()" data-t="nav.signin">Sign In</button>
+    <button class="btn btn-accent" onclick="showLogin()" data-t="nav.start">Get Started</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag" data-t="hero.tag">India's Smartest SMM Panel</div>
+      <h1 class="hero-h">
+        <span data-t="hero.h1a">Grow Fast with</span><br/>
+        <span class="accent">iDELL Haiku</span>
+      </h1>
+      <p class="hero-p" data-t="hero.p">Instagram, YouTube, Facebook — India's most affordable SMM panel. Views from just Rs. 2.30 per 13,000.</p>
+      <div class="hero-actions">
+        <button class="btn btn-accent" onclick="showLogin()" style="padding:.68rem 1.8rem;font-size:.88rem;" data-t="hero.cta">
+          <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Sign in with Google — Free
+        </button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="dp-card-wrap">
+        <div class="dp-header">
+          <div class="dp-logo-text">iDELL <span>Haiku</span></div>
+          <div class="dp-live">Live</div>
+        </div>
+        <div class="dp-grid">
+          <div class="dp-mini"><div class="dp-mini-lbl">Balance</div><div class="dp-mini-val">Rs. <span>250</span></div></div>
+          <div class="dp-mini"><div class="dp-mini-lbl">Orders</div><div class="dp-mini-val"><span>12</span></div></div>
+        </div>
+        <div class="dp-services">
+          <div class="dp-svc-title">Recent Services</div>
+          <div class="dp-svc-item"><span class="dp-svc-name">IG Reels Views</span><span class="dp-svc-price">Rs. 2.30</span></div>
+          <div class="dp-svc-item"><span class="dp-svc-name">YT Subscribers</span><span class="dp-svc-price">Rs. 60/K</span></div>
+          <div class="dp-svc-item"><span class="dp-svc-name">FB Reels Views</span><span class="dp-svc-price">Rs. 0.18/K</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section" id="services">
+  <p class="sec-tag reveal" data-t="sec.services.tag">Services</p>
+  <h2 class="sec-h reveal" style="transition-delay:.06s"><span data-t="sec.services.h">India's </span><span class="accent" data-t="sec.services.accent">Cheapest Rates</span></h2>
+  <p class="sec-p reveal" style="transition-delay:.1s" data-t="sec.services.p">Instagram, YouTube, Facebook — Sign in to view full pricing and place orders instantly.</p>
+  <div class="reveal" style="transition-delay:.13s;display:flex;gap:.7rem;flex-wrap:wrap;">
+    <button class="btn btn-accent" onclick="showLogin()" data-t="sec.services.btn1">Sign in — It's Free</button>
+    <button class="btn btn-outline" onclick="showLogin()" data-t="sec.services.btn2">View All Prices</button>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section" id="how">
+  <p class="sec-tag reveal" data-t="sec.how.tag">Simple Process</p>
+  <h2 class="sec-h reveal" style="transition-delay:.05s">Order in <span class="accent" data-t="sec.how.accent">3 Easy Steps</span></h2>
+  <div class="steps-grid">
+    <div class="step-card reveal" style="transition-delay:.07s">
+      <div class="step-num">01</div>
+      <div class="step-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+      <h3 data-t="step1.h">Create Free Account</h3>
+      <p data-t="step1.p">Sign in with Google in one tap. No forms, no passwords, instant access.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.12s">
+      <div class="step-num">02</div>
+      <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+      <h3 data-t="step2.h">Select Service</h3>
+      <p data-t="step2.p">Choose platform, service type, enter your link and quantity. See the exact charge instantly.</p>
+    </div>
+    <div class="step-card reveal" style="transition-delay:.17s">
+      <div class="step-num">03</div>
+      <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <h3 data-t="step3.h">Pay and Watch Growth</h3>
+      <p data-t="step3.p">Add funds via PhonePe or UPI, submit your order, and watch your account grow within minutes.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section" id="faq">
+  <p class="sec-tag reveal" data-t="sec.faq.tag">FAQ</p>
+  <h2 class="sec-h reveal" style="transition-delay:.05s">Common <span class="accent" data-t="sec.faq.accent">Questions</span></h2>
+  <div class="faq-list reveal" style="transition-delay:.09s">
+    <div class="faq-item"><div class="faq-q" data-t="faq1.q">Is iDELL Haiku safe for my account?</div><div class="faq-ans"><p data-t="faq1.a">Yes. We never ask for your password. All services are delivered from external sources. Payments are done through UPI — completely secure.</p></div></div>
+    <div class="faq-item"><div class="faq-q" data-t="faq2.q">How fast is the delivery?</div><div class="faq-ans"><p data-t="faq2.a">Most orders start within 1-5 minutes. Delivery time depends on quantity ordered. Track your order live from the dashboard.</p></div></div>
+    <div class="faq-item"><div class="faq-q" data-t="faq3.q">What if my follower count drops?</div><div class="faq-ans"><p data-t="faq3.a">All refill-guaranteed services will be automatically topped up at no extra cost.</p></div></div>
+    <div class="faq-item"><div class="faq-q" data-t="faq4.q">How do I add balance?</div><div class="faq-ans"><p data-t="faq4.a">Go to Add Funds, scan our PhonePe QR code, enter amount. Balance is updated within minutes after verification.</p></div></div>
+    <div class="faq-item"><div class="faq-q" data-t="faq5.q">Minimum payment amount?</div><div class="faq-ans"><p data-t="faq5.a">Minimum payment is Rs. 5. There is no upper limit.</p></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">iDELL <span>Haiku</span></div>
+      <div class="footer-desc" data-t="footer.desc">India's most affordable SMM panel — by Sahil Suthariya</div>
+    </div>
+    <a href="https://instagram.com/suthariya_sahil" target="_blank" class="footer-ig">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="#E1306C" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke="#E1306C" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="#E1306C"/></svg>
+      @suthariya_sahil
+    </a>
+  </div>
+  <div class="footer-copy">
+    <span>2025 iDELL Haiku. All rights reserved.</span>
+    <span><a href="https://instagram.com/suthariya_sahil" target="_blank">Made by @suthariya_sahil</a></span>
+  </div>
+</footer>
+
+</div><!-- /page-landing -->
+
+<!-- ===================================================
+     LOGIN PAGE
+     =================================================== -->
+<div id="page-login">
+  <div class="login-card">
+    <div class="login-logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="login-brand">iDELL <span>Haiku</span></div>
+    <div class="login-tagline" data-t="login.tagline">India's Smartest SMM Panel</div>
+    <div class="login-sub" data-t="login.sub">Instagram &amp; YouTube growth at India's lowest prices. Sign in with Google — it's free.</div>
+
+    <button class="google-btn" onclick="doGoogleLogin()">
+      <svg viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      <span data-t="login.btn">Sign in with Google — Free</span>
+    </button>
+
+    <div class="login-divider" data-t="login.divider">secure login</div>
+    <p class="login-note" data-t="login.note">By signing in, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+    <div style="margin-top:1rem;text-align:center;">
+      <button class="btn btn-outline" onclick="showLanding()" data-t="login.back">Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================
+     APP
+     =================================================== -->
+<div id="page-app">
+  <div class="app-layout">
+
+    <div class="sidebar" id="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-text">iDELL <span>Haiku</span></div>
+      </div>
+      <div class="sb-user">
+        <div class="sb-avatar" id="sb-avatar">U</div>
+        <div>
+          <div class="sb-uname" id="sb-name">User</div>
+          <div class="sb-balance" id="sb-balance">Rs. 0.00</div>
+        </div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-group" data-t="sb.main">Main</div>
+        <div class="nav-item active" onclick="gotoPage('dashboard')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span data-t="sb.dashboard">Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="gotoPage('new-order')">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span data-t="sb.neworder">New Order</span>
+        </div>
+        <div class="nav-item" onclick="gotoPage('orders')">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <span data-t="sb.history">Order History</span>
+        </div>
+        <div class="nav-item" onclick="gotoPage('calculator')">
+          <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+          <span data-t="sb.calc">Price Calculator</span>
+        </div>
+        <div class="sb-group" data-t="sb.account">Account</div>
+        <div class="nav-item" onclick="gotoPage('funds')">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          <span data-t="sb.funds">Add Funds</span>
+        </div>
+      </nav>
+      <div class="sb-bottom">
+        <button class="signout-btn" onclick="doSignOut()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span data-t="sb.signout">Sign Out</span>
+        </button>
+      </div>
+    </div>
+
+    <main class="app-main">
+      <div class="app-topbar">
+        <div style="display:flex;align-items:center;gap:.7rem;">
+          <button class="mobile-menu-btn" onclick="toggleSidebar()">
+            <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="tb-title" id="page-title">Dashboard</div>
+        </div>
+        <div class="tb-right">
+          <div class="balance-pill" id="top-balance">Rs. 0.00</div>
+          <button class="btn btn-accent" style="padding:.38rem .9rem;font-size:.74rem;" onclick="gotoPage('funds')" data-t="tb.addfunds">Add Funds</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="app-page active" id="pg-dashboard">
+        <div class="dash-stats">
+          <div class="dash-stat"><div class="dash-stat-label" data-t="ds.balance">Balance</div><div class="dash-stat-val c" id="ds-balance">Rs. 0.00</div></div>
+          <div class="dash-stat"><div class="dash-stat-label" data-t="ds.orders">Total Orders</div><div class="dash-stat-val" id="ds-orders">0</div></div>
+          <div class="dash-stat"><div class="dash-stat-label" data-t="ds.pending">Pending</div><div class="dash-stat-val" id="ds-pending">0</div></div>
+          <div class="dash-stat"><div class="dash-stat-label" data-t="ds.done">Completed</div><div class="dash-stat-val" id="ds-completed">0</div></div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-card">
+            <h3 data-t="da.quick">Quick Actions</h3>
+            <div class="quick-actions">
+              <div class="quick-btn" onclick="gotoPage('new-order')"><span data-t="qa.order">Place New Order</span><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+              <div class="quick-btn" onclick="gotoPage('orders')"><span data-t="qa.history">View Order History</span><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+              <div class="quick-btn" onclick="gotoPage('funds')"><span data-t="qa.funds">Add Balance</span><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+            </div>
+          </div>
+          <div class="dash-card">
+            <h3 data-t="da.recent">Recent Orders</h3>
+            <div id="dash-recent-orders">
+              <div class="empty-state"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p data-t="da.noorders">No orders yet. Place your first order!</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW ORDER with built‑in expandable calculator -->
+      <div class="app-page" id="pg-new-order">
+        <div class="order-form">
+          <h2 data-t="order.title">Place New Order</h2>
+
+          <!-- Expandable Calculator (small by default, click to expand) -->
+          <div class="calc-card" style="margin-bottom:1.8rem; cursor:pointer;" onclick="toggleCalcSize(this)">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div class="calc-header" style="margin-bottom:0;">
+                <div class="calc-icon">
+                  <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+                </div>
+                <div>
+                  <div class="calc-title" data-t="calc.title">Price Calculator</div>
+                  <div class="calc-sub" data-t="calc.sub">Enter quantity — get exact price instantly</div>
+                </div>
+              </div>
+              <span id="calc-expand-icon" style="font-size:1.2rem; color:var(--accent);">▼</span>
+            </div>
+            <div id="calc-content" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.8rem;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:.65rem;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label" style="font-size:.7rem;" data-t="calc.platform">Platform</label>
+                  <select class="form-select" id="calc-platform" onchange="calcPlatformChange()" style="font-size:.79rem;padding:.58rem .8rem;">
+                    <option value="" data-t="calc.sel">Select</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="facebook">Facebook</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label class="form-label" style="font-size:.7rem;" data-t="calc.service">Service</label>
+                  <select class="form-select" id="calc-service" onchange="calcServiceChange()" style="font-size:.79rem;padding:.58rem .8rem;">
+                    <option value="" data-t="calc.sel2">Select</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:.5rem;">
+                <label class="form-label" style="font-size:.7rem;" data-t="calc.qty">Quantity</label>
+                <input type="number" class="form-input" id="calc-qty" placeholder="e.g. 10000" oninput="calcResult()" style="font-size:.83rem;"/>
+              </div>
+              <div class="calc-result" id="calc-result">
+                <div class="calc-result-label" data-t="calc.rlabel">Total Price</div>
+                <div class="calc-result-title" id="calc-result-title"></div>
+                <div class="calc-result-price" id="calc-price">Rs. 0.00</div>
+                <div class="calc-result-break" id="calc-breakdown"></div>
+              </div>
+              <button class="submit-btn" style="margin-top:0.2rem;" onclick="gotoPage('new-order'); document.getElementById('calc-expand-icon').click();" data-t="calc.order">Place Order Now</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-t="order.platform">Select Platform</label>
+            <div class="plt-grid">
+              <div onclick="selectPlt('instagram')" id="plt-ig" class="plt-card">
+                <svg class="plt-logo" viewBox="0 0 24 24" fill="none">
+                  <defs><linearGradient id="ig-g" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs>
+                  <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-g)"/>
+                  <circle cx="12" cy="12" r="5" stroke="white" stroke-width="1.8" fill="none"/>
+                  <circle cx="17.5" cy="6.5" r="1.2" fill="white"/>
+                </svg>
+                <div class="plt-name">Instagram</div>
+              </div>
+              <div onclick="selectPlt('youtube')" id="plt-yt" class="plt-card">
+                <svg class="plt-logo" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"/><polygon points="9.5,8 9.5,16 17,12" fill="white"/></svg>
+                <div class="plt-name">YouTube</div>
+              </div>
+              <div onclick="selectPlt('facebook')" id="plt-fb" class="plt-card">
+                <svg class="plt-logo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1877F2"/><path d="M15.5 8H13.5C13 8 13 8.5 13 9V11H15.5L15 13.5H13V20H10.5V13.5H8.5V11H10.5V9C10.5 7 11.7 6 13.5 6H15.5V8Z" fill="white"/></svg>
+                <div class="plt-name">Facebook</div>
+              </div>
+            </div>
+            <select id="of-category" style="display:none;"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" data-t="order.service">Service</label>
+            <select class="form-select" id="of-service" onchange="onServiceChange()">
+              <option value="" data-t="order.svcprompt">Select platform first</option>
+            </select>
+          </div>
+          <div class="svc-info" id="of-info"></div>
+          <div class="form-group">
+            <label class="form-label" data-t="order.link">Link</label>
+            <input type="url" class="form-input" id="of-link" placeholder="Paste your Instagram / YouTube link"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="order.qty">Quantity</label>
+            <input type="number" class="form-input" id="of-qty" placeholder="How many?" oninput="calcCharge()"/>
+            <div class="min-max" id="of-minmax"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-t="order.charge">Total Charge</label>
+            <div class="charge-box" id="of-charge">Rs. 0.00 <span data-t="order.chargehint">Enter quantity above</span></div>
+          </div>
+          <button class="submit-btn" id="order-submit-btn" onclick="placeOrder()" data-t="order.submit">Submit Order</button>
+        </div>
+      </div>
+
+      <!-- PRICE CALCULATOR (standalone) -->
+      <div class="app-page" id="pg-calculator">
+        <div class="calc-wrap">
+          <div class="calc-card">
+            <div class="calc-header">
+              <div class="calc-icon">
+                <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+              </div>
+              <div>
+                <div class="calc-title" data-t="calc.title">Price Calculator</div>
+                <div class="calc-sub" data-t="calc.sub">Enter quantity — get exact price instantly</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.75rem;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:.7rem;" data-t="calc.platform">Platform</label>
+                <select class="form-select" id="calc-platform2" onchange="calcPlatformChange2()" style="font-size:.79rem;padding:.58rem .8rem;">
+                  <option value="" data-t="calc.sel">Select</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="facebook">Facebook</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label" style="font-size:.7rem;" data-t="calc.service">Service</label>
+                <select class="form-select" id="calc-service2" onchange="calcServiceChange2()" style="font-size:.79rem;padding:.58rem .8rem;">
+                  <option value="" data-t="calc.sel2">Select</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:.75rem;">
+              <label class="form-label" style="font-size:.7rem;" data-t="calc.qty">Quantity</label>
+              <input type="number" class="form-input" id="calc-qty2" placeholder="e.g. 10000" oninput="calcResult2()" style="font-size:.83rem;"/>
+            </div>
+            <div class="calc-result" id="calc-result2">
+              <div class="calc-result-label" data-t="calc.rlabel">Total Price</div>
+              <div class="calc-result-title" id="calc-result-title2"></div>
+              <div class="calc-result-price" id="calc-price2">Rs. 0.00</div>
+              <div class="calc-result-break" id="calc-breakdown2"></div>
+            </div>
+            <button class="submit-btn" style="margin-top:.8rem;" onclick="gotoPage('new-order')" data-t="calc.order">Place Order Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER HISTORY -->
+      <div class="app-page" id="pg-orders">
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="filterOrders('all',this)" data-t="filter.all">All</button>
+          <button class="filter-btn" onclick="filterOrders('pending',this)" data-t="filter.pending">Pending</button>
+          <button class="filter-btn" onclick="filterOrders('processing',this)" data-t="filter.proc">Processing</button>
+          <button class="filter-btn" onclick="filterOrders('completed',this)" data-t="filter.done">Completed</button>
+          <button class="filter-btn" onclick="filterOrders('cancelled',this)" data-t="filter.cancel">Cancelled</button>
+        </div>
+        <div class="orders-list" id="orders-list">
+          <div class="empty-state"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><p data-t="orders.empty">No orders found.</p></div>
+        </div>
+      </div>
+
+      <!-- ADD FUNDS -->
+      <div class="app-page" id="pg-funds">
+        <h2 style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:1.4rem;" data-t="funds.title">Add Funds</h2>
+        <div class="funds-grid">
+          <div class="funds-card">
+            <h3 data-t="funds.scan">Scan &amp; Pay</h3>
+            <p data-t="funds.scanp">Scan QR using PhonePe, GPay, Paytm, or any UPI app. Minimum Rs. 5.</p>
+            <div class="qr-wrap">
+              <img src="phonepe-qr.jpg" alt="PhonePe QR" class="qr-img"
+                onerror="this.style.display='none';document.getElementById('qr-fb').style.display='flex'"/>
+              <div id="qr-fb" style="display:none;width:190px;height:190px;background:var(--surface2);border:2px dashed var(--border2);border-radius:12px;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;margin:0 auto;">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><path d="M21 16h-3v3M21 21v.01M14 3v3h3M14 8v.01M14 13h3v3M17 13v.01M14 21v-3"/></svg>
+                <span style="font-size:.68rem;color:var(--accent);font-weight:600;">Add phonepe-qr.jpg</span>
+              </div>
+            </div>
+            <div class="upi-chip" style="margin-bottom:.5rem;">UPI: rambaisaket@axl</div><br/>
+            <div class="upi-chip">PhonePe: +91 9104679086</div>
+          </div>
+
+          <div class="funds-card" style="text-align:left;">
+            <h3 data-t="funds.details">Payment Details</h3>
+            <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:.8rem;margin-bottom:1rem;font-size:.76rem;color:#166534;line-height:1.7;">
+              <strong data-t="funds.s1">Step 1:</strong> <span data-t="funds.s1d">Pay via UPI below</span><br/>
+              <strong data-t="funds.s2">Step 2:</strong> <span data-t="funds.s2d">Take payment screenshot</span><br/>
+              <strong data-t="funds.s3">Step 3:</strong> <span data-t="funds.s3d">Send on WhatsApp: +91 9313195257</span><br/>
+              <strong data-t="funds.s4">Step 4:</strong> <span data-t="funds.s4d">Enter UTR + Amount below</span>
+            </div>
+            <div class="form-group" style="margin-bottom:.7rem;">
+              <label class="fund-form-label" data-t="funds.utr">UTR / Transaction ID</label>
+              <input type="text" class="form-input" id="fund-txn" placeholder="12 digit UTR or Transaction ID" style="font-size:.82rem;"/>
+            </div>
+            <div class="form-group" style="margin-bottom:.7rem;">
+              <label class="fund-form-label" data-t="funds.amount">Amount Paid (Rs.)</label>
+              <input type="number" class="form-input" id="fund-amount" placeholder="How much did you pay? e.g. 50" min="5" style="font-size:.82rem;"/>
+            </div>
+            <button class="submit-btn" onclick="submitFundRequest()" style="margin-bottom:.7rem;" data-t="funds.submit">Submit — Add Balance</button>
+          </div>
+        </div>
+
+        <div class="pay-confirm-box" id="pay-confirm-box">
+          <div class="pay-confirm-title" data-t="payconf.title">Welcome! Congratulations!</div>
+          <div class="pay-confirm-sub" data-t="payconf.sub">Your payment request has been submitted. Please send your screenshot on WhatsApp to complete verification. Balance will be added within 5-10 minutes.</div>
+          <label class="pay-upload-label" for="screenshot-input">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span data-t="payconf.upload">Tap to upload payment screenshot</span>
+          </label>
+          <input type="file" id="screenshot-input" accept="image/*" style="display:none;" onchange="handleScreenshot(this)"/>
+          <a href="https://wa.me/919313195257" target="_blank" style="text-decoration:none;">
+            <button class="wa-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path stroke="#fff" stroke-width="1.5" d="M3.05 11.65C3.05 7.45 6.45 4.05 10.65 4.05c4.2 0 7.6 3.4 7.6 7.6 0 4.2-3.4 7.6-7.6 7.6a7.57 7.57 0 0 1-3.5-.86L3 21l2.52-3.35a7.55 7.55 0 0 1-2.47-6z" fill="none"/>
+              </svg>
+              <span data-t="payconf.wa">Send Screenshot on WhatsApp</span>
+            </button>
+          </a>
+          <div class="wa-arrow-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span data-t="payconf.hint">Tap above to open WhatsApp chat with Sahil</span>
+          </div>
+        </div>
+
+        <div style="margin-top:1.8rem;">
+          <h3 style="font-size:.85rem;font-weight:700;margin-bottom:.8rem;" data-t="funds.requests">Your Fund Requests</h3>
+          <div id="fund-requests-list">
+            <div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><p data-t="funds.noreqs">No fund requests yet.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <div class="sb-overlay" id="sb-overlay" style="display:none;" onclick="closeSidebar()"></div>
+</div><!-- /page-app -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================================================
+     CHATBOT FAB
+     =================================================== -->
+<button id="chat-fab" onclick="chatToggle()" style="display:none;">
+  <div class="fab-dot">AI</div>
+  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div id="chat-screen">
+  <div class="chat-bar">
+    <div class="chat-ident">
+      <div class="chat-av">iH</div>
+      <div class="chat-ident-info">
+        <h4>iDELL Haiku AI</h4>
+        <p>Online — 24/7 Support</p>
+      </div>
+    </div>
+    <div class="chat-modes">
+      <button class="chat-mode-btn on" id="cm-chat" onclick="cMode('chat')">Chat</button>
+      <button class="chat-mode-btn" id="cm-deep" onclick="cMode('deep')">Deep Think</button>
+      <button class="chat-mode-btn" id="cm-img" onclick="cMode('image')">Image</button>
+    </div>
+    <div class="chat-bar-right">
+      <button class="chat-x" onclick="chatToggle()">&#x2715;</button>
+    </div>
+  </div>
+
+  <div class="chat-body" id="cb">
+    <div class="cmsg-wrap">
+      <div class="cmsg bot">Welcome to <strong>iDELL Haiku AI</strong>.<br/><br/>I can help with pricing, orders, account setup, and anything about iDELL Haiku. What do you need?</div>
+    </div>
+  </div>
+
+  <div class="cquick" id="cq">
+    <button class="cquick-btn" onclick="cQuick('Who is Sahil?')">Who is Sahil?</button>
+    <button class="cquick-btn" onclick="cQuick('Who created you?')">Who made you?</button>
+    <button class="cquick-btn" onclick="cQuick('What are your services and pricing?')">Pricing</button>
+    <button class="cquick-btn" onclick="cQuick('How do I place an order?')">How to order</button>
+    <button class="cquick-btn" onclick="cQuick('How to add balance?')">Add balance</button>
+  </div>
+
+  <div class="chat-foot">
+    <div class="chat-box">
+      <div class="attach-bar-c" id="cab" style="display:none;"></div>
+      <textarea id="ci" rows="1" placeholder="Message iDELL Haiku AI..."></textarea>
+      <div class="chat-foot-row">
+        <div class="chat-left-ico">
+          <label class="c-ico" title="Attach file">
+            <input type="file" id="cfi" style="display:none;" onchange="cFile(this)" accept=".txt,.js,.py,.html,.css,.json"/>
+            <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </label>
+          <button class="c-ico" onclick="cLinkModal()">
+            <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+        </div>
+        <button id="csend" onclick="cSend()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="chat-hint">iDELL Haiku AI — Powered by Claude — Available 24/7</div>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal-bg" id="share-modal">
+  <div class="modal-card">
+    <div class="modal-ttl">Share Chat</div>
+    <div class="modal-sub">Copy your conversation.</div>
+    <div class="modal-txt" id="share-txt"></div>
+    <div class="modal-btns">
+      <button class="modal-btn prim" onclick="doCopy()">Copy</button>
+      <button class="modal-btn sec" onclick="closeShare()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Link Modal -->
+<div class="modal-bg" id="link-modal">
+  <div class="modal-card">
+    <div class="modal-ttl">Share a Link</div>
+    <div class="modal-sub">Paste a URL to discuss with AI.</div>
+    <input class="modal-input" id="link-inp" type="url" placeholder="https://..."/>
+    <div class="modal-btns">
+      <button class="modal-btn prim" onclick="submitLink()">Send</button>
+      <button class="modal-btn sec" onclick="closeLink()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================
+     JAVASCRIPT
+     =================================================== -->
+<script>
+/* ============================================================
+   TRANSLATIONS (Full strict localization)
+   ============================================================ */
+const T = {
+  english: {
+    'lang-gate-sub': 'Select your language to continue',
+    'hero.tag': "India's Smartest SMM Panel",
+    'hero.h1a': 'Grow Fast with',
+    'hero.p': "Instagram, YouTube, Facebook — India's most affordable SMM panel. Views from just Rs. 2.30 per 13,000.",
+    'hero.cta': 'Sign in with Google — Free',
+    'nav.services': 'Services', 'nav.how': 'How It Works', 'nav.faq': 'FAQ',
+    'nav.signin': 'Sign In', 'nav.start': 'Get Started',
+    'login.tagline': "India's Smartest SMM Panel",
+    'login.sub': "Instagram & YouTube growth at India's lowest prices.",
+    'login.btn': 'Sign in with Google — Free',
+    'login.divider': 'secure login',
+    'login.note': 'By signing in, you agree to our Terms and Privacy Policy.',
+    'login.back': 'Back to Home',
+    'order.title': 'Place New Order',
+    'order.platform': 'Select Platform',
+    'order.service': 'Service',
+    'order.svcprompt': 'Select platform first',
+    'order.link': 'Link',
+    'order.qty': 'Quantity',
+    'order.charge': 'Total Charge',
+    'order.chargehint': 'Enter quantity above',
+    'order.submit': 'Submit Order',
+    'calc.title': 'Price Calculator',
+    'calc.sub': 'Enter quantity — get exact price instantly',
+    'calc.platform': 'Platform', 'calc.service': 'Service',
+    'calc.sel': 'Select', 'calc.sel2': 'Select',
+    'calc.qty': 'Quantity', 'calc.rlabel': 'Total Price',
+    'calc.order': 'Place Order Now',
+    'funds.title': 'Add Funds',
+    'funds.scan': 'Scan & Pay',
+    'funds.scanp': 'Scan QR using PhonePe, GPay, Paytm, or any UPI app. Minimum Rs. 5.',
+    'funds.details': 'Payment Details',
+    'funds.s1': 'Step 1:', 'funds.s1d': 'Pay via UPI below',
+    'funds.s2': 'Step 2:', 'funds.s2d': 'Take payment screenshot',
+    'funds.s3': 'Step 3:', 'funds.s3d': 'Send on WhatsApp: +91 9313195257',
+    'funds.s4': 'Step 4:', 'funds.s4d': 'Enter UTR + Amount below',
+    'funds.utr': 'UTR / Transaction ID',
+    'funds.amount': 'Amount Paid (Rs.)',
+    'funds.submit': 'Submit — Add Balance',
+    'funds.requests': 'Your Fund Requests',
+    'funds.noreqs': 'No fund requests yet.',
+    'payconf.title': 'Welcome! Congratulations!',
+    'payconf.sub': 'Your payment request has been submitted. Send your screenshot on WhatsApp to complete verification.',
+    'payconf.upload': 'Tap to upload payment screenshot',
+    'payconf.wa': 'Send Screenshot on WhatsApp',
+    'payconf.hint': 'Tap above to open WhatsApp chat with Sahil',
+    'sb.main': 'Main', 'sb.dashboard': 'Dashboard', 'sb.neworder': 'New Order',
+    'sb.history': 'Order History', 'sb.calc': 'Price Calculator',
+    'sb.account': 'Account', 'sb.funds': 'Add Funds', 'sb.signout': 'Sign Out',
+    'ds.balance': 'Balance', 'ds.orders': 'Total Orders', 'ds.pending': 'Pending', 'ds.done': 'Completed',
+    'da.quick': 'Quick Actions', 'da.recent': 'Recent Orders', 'da.noorders': 'No orders yet.',
+    'qa.order': 'Place New Order', 'qa.history': 'View Order History', 'qa.funds': 'Add Balance',
+    'tb.addfunds': 'Add Funds',
+    'filter.all': 'All', 'filter.pending': 'Pending', 'filter.proc': 'Processing', 'filter.done': 'Completed', 'filter.cancel': 'Cancelled',
+    'orders.empty': 'No orders found.',
+    'sec.services.tag': 'Services', 'sec.services.h': "India's ", 'sec.services.accent': 'Cheapest Rates',
+    'sec.services.p': "Instagram, YouTube, Facebook — Sign in to view full pricing.",
+    'sec.services.btn1': 'Sign in — Free', 'sec.services.btn2': 'View All Prices',
+    'sec.how.tag': 'Simple Process', 'sec.how.accent': '3 Easy Steps',
+    'step1.h': 'Create Free Account', 'step1.p': 'Sign in with Google in one tap. Instant access.',
+    'step2.h': 'Select Service', 'step2.p': 'Choose platform, service type, enter your link and quantity.',
+    'step3.h': 'Pay and Watch Growth', 'step3.p': 'Add funds via UPI, submit your order, and watch growth.',
+    'sec.faq.tag': 'FAQ', 'sec.faq.accent': 'Questions',
+    'faq1.q': 'Is iDELL Haiku safe for my account?', 'faq1.a': 'Yes. We never ask for your password. All payments are done through UPI — completely secure.',
+    'faq2.q': 'How fast is delivery?', 'faq2.a': 'Most orders start within 1-5 minutes.',
+    'faq3.q': 'What if follower count drops?', 'faq3.a': 'Refill-guaranteed services are automatically topped up at no extra cost.',
+    'faq4.q': 'How do I add balance?', 'faq4.a': 'Go to Add Funds, scan PhonePe QR, enter amount. Balance added within minutes.',
+    'faq5.q': 'Minimum payment?', 'faq5.a': 'Minimum payment is Rs. 5.',
+    'footer.desc': "India's most affordable SMM panel — by Sahil Suthariya",
+  },
+  hindi: {
+    'lang-gate-sub': 'अपनी भाषा चुनें',
+    'hero.tag': 'भारत का सबसे सस्ता SMM पैनल',
+    'hero.h1a': 'बढ़ो तेजी से',
+    'hero.p': 'Instagram, YouTube, Facebook — सिर्फ Rs. 2.30 में 13,000 व्यूज़।',
+    'hero.cta': 'Google से साइन इन करें — मुफ्त',
+    'nav.services': 'सेवाएं', 'nav.how': 'कैसे काम करता है', 'nav.faq': 'सवाल-जवाब',
+    'nav.signin': 'साइन इन', 'nav.start': 'शुरू करें',
+    'login.tagline': 'भारत का सबसे सस्ता SMM पैनल',
+    'login.sub': 'सबसे कम कीमत में Instagram और YouTube ग्रोथ।',
+    'login.btn': 'Google से साइन इन — मुफ्त',
+    'login.divider': 'सुरक्षित लॉगिन',
+    'login.note': 'साइन इन करके आप हमारी शर्तें और गोपनीयता नीति से सहमत होते हैं।',
+    'login.back': 'होम पर जाएं',
+    'order.title': 'नया ऑर्डर दें',
+    'order.platform': 'प्लेटफॉर्म चुनें',
+    'order.service': 'सेवा',
+    'order.svcprompt': 'पहले प्लेटफॉर्म चुनें',
+    'order.link': 'लिंक',
+    'order.qty': 'मात्रा',
+    'order.charge': 'कुल चार्ज',
+    'order.chargehint': 'मात्रा डालें',
+    'order.submit': 'ऑर्डर जमा करें',
+    'calc.title': 'मूल्य कैलकुलेटर',
+    'calc.sub': 'मात्रा डालें — तुरंत कीमत देखें',
+    'calc.platform': 'प्लेटफॉर्म', 'calc.service': 'सेवा',
+    'calc.sel': 'चुनें', 'calc.sel2': 'चुनें',
+    'calc.qty': 'मात्रा', 'calc.rlabel': 'कुल मूल्य',
+    'calc.order': 'अभी ऑर्डर दें',
+    'funds.title': 'बैलेंस जोड़ें',
+    'funds.scan': 'QR स्कैन करें और पेमेंट करें',
+    'funds.scanp': 'PhonePe, GPay, Paytm, या किसी UPI ऐप से स्कैन करें। न्यूनतम Rs. 5।',
+    'funds.details': 'भुगतान विवरण',
+    'funds.s1': 'चरण 1:', 'funds.s1d': 'नीचे UPI से पेमेंट करें',
+    'funds.s2': 'चरण 2:', 'funds.s2d': 'स्क्रीनशॉट लें',
+    'funds.s3': 'चरण 3:', 'funds.s3d': 'WhatsApp पर भेजें: +91 9313195257',
+    'funds.s4': 'चरण 4:', 'funds.s4d': 'UTR और राशि डालें',
+    'funds.utr': 'UTR / लेनदेन ID',
+    'funds.amount': 'भुगतान राशि (Rs.)',
+    'funds.submit': 'जमा करें — बैलेंस जोड़ें',
+    'funds.requests': 'आपके फंड अनुरोध',
+    'funds.noreqs': 'कोई फंड अनुरोध नहीं।',
+    'payconf.title': 'स्वागत है! बधाई हो!',
+    'payconf.sub': 'आपका पेमेंट अनुरोध जमा हो गया। WhatsApp पर स्क्रीनशॉट भेजें।',
+    'payconf.upload': 'स्क्रीनशॉट अपलोड करें',
+    'payconf.wa': 'WhatsApp पर स्क्रीनशॉट भेजें',
+    'payconf.hint': 'ऊपर टैप करें — साहिल के WhatsApp पर जाएं',
+    'sb.main': 'मुख्य', 'sb.dashboard': 'डैशबोर्ड', 'sb.neworder': 'नया ऑर्डर',
+    'sb.history': 'ऑर्डर इतिहास', 'sb.calc': 'मूल्य कैलकुलेटर',
+    'sb.account': 'खाता', 'sb.funds': 'बैलेंस जोड़ें', 'sb.signout': 'साइन आउट',
+    'ds.balance': 'बैलेंस', 'ds.orders': 'कुल ऑर्डर', 'ds.pending': 'लंबित', 'ds.done': 'पूर्ण',
+    'da.quick': 'त्वरित कार्य', 'da.recent': 'हाल के ऑर्डर', 'da.noorders': 'अभी तक कोई ऑर्डर नहीं।',
+    'qa.order': 'नया ऑर्डर दें', 'qa.history': 'ऑर्डर इतिहास देखें', 'qa.funds': 'बैलेंस जोड़ें',
+    'tb.addfunds': 'बैलेंस जोड़ें',
+    'filter.all': 'सभी', 'filter.pending': 'लंबित', 'filter.proc': 'प्रसंस्करण', 'filter.done': 'पूर्ण', 'filter.cancel': 'रद्द',
+    'orders.empty': 'कोई ऑर्डर नहीं मिला।',
+    'sec.services.tag': 'सेवाएं', 'sec.services
